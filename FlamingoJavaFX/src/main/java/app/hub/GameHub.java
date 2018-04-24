@@ -33,6 +33,7 @@ public class GameHub extends Hub {
 				HubTable.AddPlayerToTable(act.getPlayer());
 				break;
 			case Leave:
+				HubTable.RemovePlayerFromTable(act.getPlayer());
 				break;
 			case TableState:
 				break;
@@ -40,6 +41,7 @@ public class GameHub extends Hub {
 		}
 		
 
+		resetOutput();
 		
 		super.sendToAll(HubTable);
 	}
