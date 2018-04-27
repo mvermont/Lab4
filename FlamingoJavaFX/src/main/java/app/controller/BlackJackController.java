@@ -70,7 +70,6 @@ public class BlackJackController implements Initializable {
 				else {
 					btnTop.setVisible(false);
 					lblTopName.setText(p.getPlayerName());
-					//test
 				}
 			}
 			else if(p.getiPlayerPosition() == 0) {
