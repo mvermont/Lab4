@@ -1,6 +1,7 @@
 package app.controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import app.Flamingo;
@@ -44,6 +45,7 @@ public class BlackJackController implements Initializable {
 
 		act.setAction(btn.getText().equals("Sit")  ? eAction.Sit : eAction.Leave);
 		Player p = FlamingoGame.getAppPlayer();
+		
 		if (btn.getId().equals("btnTop")) {
 			p.setiPlayerPosition(2);
 
@@ -54,32 +56,60 @@ public class BlackJackController implements Initializable {
 		act.setPlayer(FlamingoGame.getAppPlayer());
 		FlamingoGame.SendMessageToClient(act);
 
-		// TODO: Implement this. Create a new 'Action', send the 'Sit' or 'Leave' action
-		// to the Hub.
-
 	}
 
 	public void HandleTableState(Table t) {
 
-		for (Player p: t.GetTablePlayers())
-		{
-			switch (p.getiPlayerPosition())
-			{
-			case 0:
-				lblBottomName.setText(p.getPlayerName());
-				break;
-			case 2:
-				lblTopName.setText(p.getPlayerName());
-				break;
+		for(Player p : t.GetTablePlayers()) {
+			if(p.getiPlayerPosition() == 2) {
+				if(p.getiPokerClientID() == FlamingoGame.getAppPlayer().getiPokerClientID()) {
+					btnTop.setText("Leave");
+					lblTopName.setText(p.getPlayerName());
+					btnBottom.setVisible(false);
+				}
+				else {
+					btnTop.setVisible(false);
+					lblTopName.setText(p.getPlayerName());
+				}
+			}
+			else if(p.getiPlayerPosition() == 0) {
+				if(p.getiPokerClientID() == FlamingoGame.getAppPlayer().getiPokerClientID()) {
+					btnBottom.setText("Leave");
+					lblBottomName.setText(p.getPlayerName());
+					btnTop.setVisible(false);
+				}
+				else {
+					btnBottom.setVisible(false);
+					lblBottomName.setText(p.getPlayerName());
+				}
 			}
 		}
-		
-		//	How to handle button text & visibility
-		//btnTop.setText("Leave");
-		//btnTop.setVisible(false);
-		// TODO: Implement this.
+		checkSeating(t);
 	}
+		
+		
 
+	public void checkSeating(Table t) {
+		if(t.GetTablePlayers().size() == 0) {
+			btnBottom.setText("Sit");
+			lblBottomName.setText("");
+			btnBottom.setVisible(true);
+			btnTop.setText("Sit");
+			lblTopName.setText("");
+			btnTop.setVisible(true);
+		}
+		else if(t.GetTablePlayers().size() == 1 && t.GetTablePlayers().get(0).getiPlayerPosition() != 2) {
+			btnTop.setText("Sit");
+			lblTopName.setText("");
+			
+		}
+		else if(t.GetTablePlayers().size() == 1 && t.GetTablePlayers().get(0).getiPlayerPosition() != 0) {
+			btnBottom.setText("Sit");
+			lblBottomName.setText("");
+			
+		}
+
+	}
 	public void HandleGameState(GamePlay gp) {
 
 		// Coming Soon....!

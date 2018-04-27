@@ -42,6 +42,13 @@ public class Flamingo extends Application {
 		showClientServer(primaryStage);
 
 	}
+	
+	@Override
+	public void stop() throws Exception {
+		Action act = new Action(eAction.Leave, this.appPlayer);
+		gClient.messageSend(act);
+		super.stop();
+	}
 
 	public void setPlayer(Player player) {
 		this.appPlayer = player;
@@ -66,12 +73,11 @@ public class Flamingo extends Application {
 			BJC.setMainApp(this);
 			primaryStage.show();
 
-			/*
-			Action act = new Action();
+			/*Action act = new Action();
 			act.setAction(eAction.TableState);
 			act.setPlayer(this.getAppPlayer());
-			this.SendMessageToClient(act);
-			*/
+			this.SendMessageToClient(act);*/
+
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
